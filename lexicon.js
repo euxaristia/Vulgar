@@ -1008,7 +1008,7 @@ const LatinLexicon = {
         'ille': {
             lemma: 'ille',
             pos: 'pronoun/adjective',
-            meanings: ['that', 'that one', 'he'],
+            meanings: ['he', 'that', 'that one'],
             grammar: 'Nominative singular masculine demonstrative'
         },
         'illa': {
