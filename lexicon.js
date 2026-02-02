@@ -104,7 +104,7 @@ const LatinLexicon = {
         'apud': {
             lemma: 'apud',
             pos: 'preposition',
-            meanings: ['at', 'near', 'with', 'among', 'in the presence of'],
+            meanings: ['with', 'at', 'near', 'among', 'in the presence of'],
             grammar: 'Takes accusative case'
         },
         'aqua': {
@@ -290,6 +290,42 @@ const LatinLexicon = {
             pos: 'verb',
             meanings: ['created', 'made', 'produced'],
             grammar: '3rd person singular perfect indicative active'
+        },
+        'crederent': {
+            lemma: 'credo',
+            pos: 'verb',
+            meanings: ['they might believe'],
+            grammar: '3rd person plural imperfect subjunctive active'
+        },
+        'credit': {
+            lemma: 'credo',
+            pos: 'verb',
+            meanings: ['believes', 'trusts'],
+            grammar: '3rd person singular present indicative active'
+        },
+        'credunt': {
+            lemma: 'credo',
+            pos: 'verb',
+            meanings: ['they believe'],
+            grammar: '3rd person plural present indicative active'
+        },
+        'credere': {
+            lemma: 'credo',
+            pos: 'verb',
+            meanings: ['to believe', 'to trust'],
+            grammar: 'Present infinitive active'
+        },
+        'creditis': {
+            lemma: 'credo',
+            pos: 'verb',
+            meanings: ['you believe'],
+            grammar: '2nd person plural present indicative active'
+        },
+        'credite': {
+            lemma: 'credo',
+            pos: 'verb',
+            meanings: ['believe!'],
+            grammar: '2nd person plural present imperative active'
         },
         'comprehenderunt': {
             lemma: 'comprehendo',
@@ -505,6 +541,12 @@ const LatinLexicon = {
             meanings: ['to them', 'for them'],
             grammar: 'Dative/ablative plural'
         },
+        'eam': {
+            lemma: 'is',
+            pos: 'pronoun',
+            meanings: ['her', 'it'],
+            grammar: 'Accusative singular feminine'
+        },
         'enim': {
             lemma: 'enim',
             pos: 'conjunction',
@@ -656,6 +698,12 @@ const LatinLexicon = {
             pos: 'verb',
             meanings: ['let it be done', 'let there be', 'may it happen'],
             grammar: '3rd person singular present subjunctive passive'
+        },
+        'fieri': {
+            lemma: 'fio',
+            pos: 'verb',
+            meanings: ['to become', 'to be made', 'to happen'],
+            grammar: 'Present infinitive passive'
         },
         'fide': {
             lemma: 'fides',
@@ -853,6 +901,18 @@ const LatinLexicon = {
             meanings: ['had', 'held'],
             grammar: '3rd person singular perfect indicative active'
         },
+        'habitavit': {
+            lemma: 'habito',
+            pos: 'verb',
+            meanings: ['dwelt', 'lived', 'inhabited'],
+            grammar: '3rd person singular perfect indicative active'
+        },
+        'habitat': {
+            lemma: 'habito',
+            pos: 'verb',
+            meanings: ['dwells', 'lives', 'inhabits'],
+            grammar: '3rd person singular present indicative active'
+        },
         'hic': {
             lemma: 'hic',
             pos: 'pronoun/adjective',
@@ -900,6 +960,12 @@ const LatinLexicon = {
             pos: 'noun',
             meanings: ['of men', 'of humans'],
             grammar: 'Genitive plural masculine'
+        },
+        'hunc': {
+            lemma: 'hic',
+            pos: 'pronoun',
+            meanings: ['this'],
+            grammar: 'Accusative singular masculine'
         },
         'hora': {
             lemma: 'hora',
@@ -1273,11 +1339,35 @@ const LatinLexicon = {
             meanings: ['light'],
             grammar: 'Accusative singular feminine'
         },
+        'lucet': {
+            lemma: 'luceo',
+            pos: 'verb',
+            meanings: ['shines', 'is light', 'glows'],
+            grammar: '3rd person singular present indicative active'
+        },
         'lucis': {
             lemma: 'lux',
             pos: 'noun',
             meanings: ['of light'],
             grammar: 'Genitive singular feminine'
+        },
+        'lumine': {
+            lemma: 'lumen',
+            pos: 'noun',
+            meanings: ['light', 'lamp'],
+            grammar: 'Ablative singular neuter'
+        },
+        'lumen': {
+            lemma: 'lumen',
+            pos: 'noun',
+            meanings: ['light', 'lamp', 'brightness'],
+            grammar: 'Nominative/accusative singular neuter, 3rd declension'
+        },
+        'luminis': {
+            lemma: 'lumen',
+            pos: 'noun',
+            meanings: ['of light'],
+            grammar: 'Genitive singular neuter'
         },
 
         // M
@@ -1395,6 +1485,24 @@ const LatinLexicon = {
             meanings: ['of mercy', 'mercies'],
             grammar: 'Genitive/dative singular or nominative plural feminine'
         },
+        'missus': {
+            lemma: 'mitto',
+            pos: 'verb',
+            meanings: ['sent', 'dispatched'],
+            grammar: 'Nominative singular masculine perfect passive participle'
+        },
+        'missum': {
+            lemma: 'mitto',
+            pos: 'verb',
+            meanings: ['sent'],
+            grammar: 'Accusative singular masculine or nominative/accusative singular neuter perfect passive participle'
+        },
+        'misit': {
+            lemma: 'mitto',
+            pos: 'verb',
+            meanings: ['sent'],
+            grammar: '3rd person singular perfect indicative active'
+        },
         'mortem': {
             lemma: 'mors',
             pos: 'noun',
@@ -1474,6 +1582,24 @@ const LatinLexicon = {
             pos: 'conjunction',
             meanings: ['for', 'because'],
             grammar: 'Explanatory conjunction'
+        },
+        'nati': {
+            lemma: 'nascor',
+            pos: 'verb',
+            meanings: ['born'],
+            grammar: 'Nominative plural masculine perfect passive participle'
+        },
+        'natus': {
+            lemma: 'nascor',
+            pos: 'verb',
+            meanings: ['born'],
+            grammar: 'Nominative singular masculine perfect passive participle'
+        },
+        'natum': {
+            lemma: 'nascor',
+            pos: 'verb',
+            meanings: ['born'],
+            grammar: 'Accusative singular masculine or nominative/accusative singular neuter perfect passive participle'
         },
         'nec': {
             lemma: 'nec/neque',
@@ -1767,6 +1893,18 @@ const LatinLexicon = {
             meanings: ['through', 'by means of', 'during'],
             grammar: 'Takes accusative case'
         },
+        'perhiberet': {
+            lemma: 'perhibeo',
+            pos: 'verb',
+            meanings: ['might bear', 'might give', 'might testify'],
+            grammar: '3rd person singular imperfect subjunctive active'
+        },
+        'perhibeat': {
+            lemma: 'perhibeo',
+            pos: 'verb',
+            meanings: ['may bear', 'may give', 'may testify'],
+            grammar: '3rd person singular present subjunctive active'
+        },
         'populi': {
             lemma: 'populus',
             pos: 'noun',
@@ -1857,6 +1995,18 @@ const LatinLexicon = {
             meanings: ['because of', 'on account of', 'near'],
             grammar: 'Takes accusative case'
         },
+        'propria': {
+            lemma: 'proprius',
+            pos: 'adjective/noun',
+            meanings: ['his own', 'her own', 'own things', 'own home'],
+            grammar: 'Nominative/accusative plural neuter or nominative/ablative singular feminine'
+        },
+        'proprium': {
+            lemma: 'proprius',
+            pos: 'adjective',
+            meanings: ['his own', 'proper', 'characteristic'],
+            grammar: 'Accusative singular masculine/neuter or nominative singular neuter'
+        },
 
         // Q
         'quae': {
@@ -1943,6 +2093,12 @@ const LatinLexicon = {
             meanings: ['also', 'too'],
             grammar: 'Postpositive adverb'
         },
+        'quotquot': {
+            lemma: 'quotquot',
+            pos: 'pronoun',
+            meanings: ['as many as', 'all who', 'whoever'],
+            grammar: 'Indeclinable relative pronoun'
+        },
 
         // R
         'regnum': {
@@ -1962,6 +2118,18 @@ const LatinLexicon = {
             pos: 'noun',
             meanings: ['kingdom'],
             grammar: 'Dative/ablative singular neuter'
+        },
+        'receperunt': {
+            lemma: 'recipio',
+            pos: 'verb',
+            meanings: ['received', 'accepted', 'welcomed'],
+            grammar: '3rd person plural perfect indicative active'
+        },
+        'recepit': {
+            lemma: 'recipio',
+            pos: 'verb',
+            meanings: ['received', 'accepted'],
+            grammar: '3rd person singular perfect indicative active'
         },
         'rex': {
             lemma: 'rex',
@@ -2084,6 +2252,12 @@ const LatinLexicon = {
             pos: 'noun',
             meanings: ['of blood'],
             grammar: 'Genitive singular masculine'
+        },
+        'sanguinibus': {
+            lemma: 'sanguis',
+            pos: 'noun',
+            meanings: ['bloods', 'blood'],
+            grammar: 'Dative/ablative plural masculine'
         },
         'se': {
             lemma: 'sui',
@@ -2291,6 +2465,18 @@ const LatinLexicon = {
             meanings: ['darkness'],
             grammar: 'Dative/ablative plural feminine'
         },
+        'testimonium': {
+            lemma: 'testimonium',
+            pos: 'noun',
+            meanings: ['testimony', 'witness', 'evidence'],
+            grammar: 'Nominative/accusative singular neuter, 2nd declension'
+        },
+        'testimonio': {
+            lemma: 'testimonium',
+            pos: 'noun',
+            meanings: ['testimony', 'witness'],
+            grammar: 'Dative/ablative singular neuter'
+        },
         'terra': {
             lemma: 'terra',
             pos: 'noun',
@@ -2407,6 +2593,24 @@ const LatinLexicon = {
             meanings: ['one'],
             grammar: 'Dative/ablative singular masculine/neuter'
         },
+        'unigeniti': {
+            lemma: 'unigenitus',
+            pos: 'adjective',
+            meanings: ['only-begotten', 'only'],
+            grammar: 'Genitive singular masculine/neuter or nominative plural masculine'
+        },
+        'unigenitum': {
+            lemma: 'unigenitus',
+            pos: 'adjective',
+            meanings: ['only-begotten', 'only'],
+            grammar: 'Accusative singular masculine or nominative/accusative singular neuter'
+        },
+        'unigenitus': {
+            lemma: 'unigenitus',
+            pos: 'adjective',
+            meanings: ['only-begotten', 'only'],
+            grammar: 'Nominative singular masculine'
+        },
         'usque': {
             lemma: 'usque',
             pos: 'adverb/preposition',
@@ -2450,6 +2654,30 @@ const LatinLexicon = {
             pos: 'verb',
             meanings: ['they come'],
             grammar: '3rd person plural present indicative active'
+        },
+        'venientem': {
+            lemma: 'venio',
+            pos: 'verb',
+            meanings: ['coming'],
+            grammar: 'Accusative singular masculine/feminine present active participle'
+        },
+        'vera': {
+            lemma: 'verus',
+            pos: 'adjective',
+            meanings: ['true', 'real', 'genuine'],
+            grammar: 'Nominative/ablative singular feminine or nominative/accusative plural neuter'
+        },
+        'verum': {
+            lemma: 'verus',
+            pos: 'adjective/noun',
+            meanings: ['true', 'truth', 'real'],
+            grammar: 'Accusative singular masculine/neuter or nominative singular neuter'
+        },
+        'verus': {
+            lemma: 'verus',
+            pos: 'adjective',
+            meanings: ['true', 'real', 'genuine'],
+            grammar: 'Nominative singular masculine'
         },
         'verba': {
             lemma: 'verbum',
@@ -2625,6 +2853,30 @@ const LatinLexicon = {
             meanings: ['you (plural)'],
             grammar: 'Nominative/accusative plural 2nd person'
         },
+        'voluntate': {
+            lemma: 'voluntas',
+            pos: 'noun',
+            meanings: ['will', 'wish', 'desire'],
+            grammar: 'Ablative singular feminine'
+        },
+        'voluntatem': {
+            lemma: 'voluntas',
+            pos: 'noun',
+            meanings: ['will', 'wish', 'desire'],
+            grammar: 'Accusative singular feminine'
+        },
+        'voluntas': {
+            lemma: 'voluntas',
+            pos: 'noun',
+            meanings: ['will', 'wish', 'desire', 'intention'],
+            grammar: 'Nominative singular feminine, 3rd declension'
+        },
+        'voluntatis': {
+            lemma: 'voluntas',
+            pos: 'noun',
+            meanings: ['of the will'],
+            grammar: 'Genitive singular feminine'
+        },
         'vox': {
             lemma: 'vox',
             pos: 'noun',
@@ -2788,6 +3040,12 @@ const LatinLexicon = {
             pos: 'noun',
             meanings: ['kind', 'type', 'species', 'race'],
             grammar: 'Nominative/accusative singular neuter, 3rd declension'
+        },
+        'cui': {
+            lemma: 'qui',
+            pos: 'pronoun',
+            meanings: ['to whom', 'to which'],
+            grammar: 'Dative singular masculine/feminine/neuter'
         },
         'cuius': {
             lemma: 'qui',
@@ -3046,6 +3304,12 @@ const LatinLexicon = {
             pos: 'verb',
             meanings: ['let us make'],
             grammar: '1st person plural present subjunctive active (hortatory)'
+        },
+        'illuminat': {
+            lemma: 'illumino',
+            pos: 'verb',
+            meanings: ['illuminates', 'enlightens', 'lights up'],
+            grammar: '3rd person singular present indicative active'
         },
         'imaginem': {
             lemma: 'imago',
@@ -3438,6 +3702,24 @@ const LatinLexicon = {
             pos: 'verb',
             meanings: ['would sprout', 'would bud'],
             grammar: '3rd person singular imperfect subjunctive active'
+        },
+        'plenum': {
+            lemma: 'plenus',
+            pos: 'adjective',
+            meanings: ['full', 'filled'],
+            grammar: 'Accusative singular masculine/neuter or nominative singular neuter'
+        },
+        'plena': {
+            lemma: 'plenus',
+            pos: 'adjective',
+            meanings: ['full', 'filled'],
+            grammar: 'Nominative/ablative singular feminine or nominative/accusative plural neuter'
+        },
+        'plenus': {
+            lemma: 'plenus',
+            pos: 'adjective',
+            meanings: ['full', 'filled'],
+            grammar: 'Nominative singular masculine'
         },
         'pluerat': {
             lemma: 'pluo',
@@ -4128,6 +4410,18 @@ const LatinLexicon = {
             pos: 'verb',
             meanings: ['they had known'],
             grammar: '3rd person plural pluperfect subjunctive active'
+        },
+        'cognovit': {
+            lemma: 'cognosco',
+            pos: 'verb',
+            meanings: ['knew', 'recognized', 'learned'],
+            grammar: '3rd person singular perfect indicative active'
+        },
+        'cognoscit': {
+            lemma: 'cognosco',
+            pos: 'verb',
+            meanings: ['knows', 'recognizes'],
+            grammar: '3rd person singular present indicative active'
         },
         'nudos': {
             lemma: 'nudus',
