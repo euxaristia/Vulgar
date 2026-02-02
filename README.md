@@ -6,8 +6,6 @@ A Latin Vulgate Bible reader that breaks down each verse word-by-word so you can
 
 Ever tried reading the Vulgate and got lost three words in? Same. Vulgar shows you each Latin word in its own little bubble with a quick translation underneath. Hover over any word to get the full breakdown - dictionary form, part of speech, all the possible meanings, and grammar notes.
 
-It's called Vulgar because let's be honest, nobody has time for "Biblia Sacra Vulgata" anymore.
-
 ## Features
 
 - **Word bubbles** - Each word gets its own space with a basic translation below
