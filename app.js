@@ -99,7 +99,7 @@ class VulgateReader {
     }
 
     populateChapterSelect(bookKey) {
-        this.chapterSelect.innerHTML = '<option value="">Chapter...</option>';
+        this.chapterSelect.innerHTML = '<option value="">Capitulum...</option>';
 
         if (!bookKey || !VulgateData[bookKey]) {
             this.chapterSelect.disabled = true;
@@ -112,7 +112,7 @@ class VulgateReader {
         chapters.forEach(chapterNum => {
             const option = document.createElement('option');
             option.value = chapterNum;
-            option.textContent = `Chapter ${chapterNum}`;
+            option.textContent = `Capitulum ${chapterNum}`;
             this.chapterSelect.appendChild(option);
         });
 
@@ -149,26 +149,63 @@ class VulgateReader {
         this.nextButton.addEventListener('click', () => this.navigateNext());
 
         // Tooltip events
+        this.pinnedBubble = null;
+
+        // Click to toggle
+        document.addEventListener('click', (e) => {
+            const bubble = e.target.closest('.word-bubble:not(.punctuation)');
+
+            if (bubble) {
+                // Clicked a bubble
+                if (this.pinnedBubble === bubble) {
+                    // Unpin and hide
+                    this.pinnedBubble = null;
+                    this.hideTooltip();
+                } else {
+                    // Pin new bubble
+                    this.pinnedBubble = bubble;
+                    this.showTooltip(bubble, e);
+                }
+            } else if (!e.target.closest('#tooltip')) {
+                // Clicked elsewhere - unpin and hide
+                if (this.pinnedBubble) {
+                    this.pinnedBubble = null;
+                    this.hideTooltip();
+                }
+            }
+        });
+
+        // Hover events
         document.addEventListener('mouseover', (e) => {
+            if (this.pinnedBubble) return; // Don't change if pinned
+
             if (e.target.closest('.word-bubble:not(.punctuation)')) {
                 this.showTooltip(e.target.closest('.word-bubble'), e);
             }
         });
 
         document.addEventListener('mouseout', (e) => {
+            if (this.pinnedBubble) return; // Don't hide if pinned
+
             if (e.target.closest('.word-bubble')) {
                 this.hideTooltip();
             }
         });
 
         document.addEventListener('mousemove', (e) => {
+            if (this.pinnedBubble) return; // Don't move if pinned
+
             if (!this.tooltip.classList.contains('hidden')) {
                 this.positionTooltip(e);
             }
         });
 
-        // Hide tooltip on scroll
-        window.addEventListener('scroll', () => this.hideTooltip());
+        // Hide tooltip on scroll (if not pinned)
+        window.addEventListener('scroll', () => {
+            if (!this.pinnedBubble) {
+                this.hideTooltip();
+            }
+        });
     }
 
     showWelcome() {
@@ -182,7 +219,7 @@ class VulgateReader {
 
     loadChapter(bookKey, chapterNum) {
         if (!VulgateData[bookKey] || !VulgateData[bookKey].chapters[chapterNum]) {
-            this.versesContainer.innerHTML = '<p class="loading">Chapter not found</p>';
+            this.versesContainer.innerHTML = '<p class="loading">Capitulum not found</p>';
             return;
         }
 
@@ -201,50 +238,80 @@ class VulgateReader {
 
         // Render verses
         Object.keys(chapter).map(Number).sort((a, b) => a - b).forEach(verseNum => {
-            const verseText = chapter[verseNum];
-            const verseElement = this.createVerseElement(bookKey, chapterNum, verseNum, verseText);
-            this.versesContainer.appendChild(verseElement);
+            const verseData = chapter[verseNum];
+            this.renderVerse(verseNum, verseData);
         });
 
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    createVerseElement(bookKey, chapterNum, verseNum, verseText) {
-        const verse = document.createElement('div');
-        verse.className = 'verse';
+    // Replaced createVerseElement with renderVerse and added clearVerses
+    renderVerse(verseNum, verseData) {
+        const container = document.createElement('div');
+        container.className = 'verse-container';
 
-        // Verse header
-        const header = document.createElement('div');
-        header.className = 'verse-header';
+        // Handle both string (legacy) and object (new) formats
+        const latinText = typeof verseData === 'object' ? verseData.latin : verseData;
+        const englishText = typeof verseData === 'object' ? verseData.english : null;
 
-        const number = document.createElement('span');
-        number.className = 'verse-number';
-        number.textContent = verseNum;
+        // Create verse number
+        const numberSpan = document.createElement('span');
+        numberSpan.className = 'verse-number';
+        numberSpan.textContent = verseNum;
+        container.appendChild(numberSpan);
 
-        const reference = document.createElement('span');
-        reference.className = 'verse-reference';
-        reference.textContent = `${VulgateData[bookKey].abbrev} ${chapterNum}:${verseNum}`;
+        // Create content wrapper
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'verse-content';
 
-        header.appendChild(number);
-        header.appendChild(reference);
-        verse.appendChild(header);
+        // Latin Text (Word Bubbles)
+        const latinDiv = document.createElement('div');
+        latinDiv.className = 'verse-words'; // Changed back to verse-words to match CSS, was verse-latin
 
-        // Words container
-        const wordsContainer = document.createElement('div');
-        wordsContainer.className = 'verse-words';
+        // Parse words using existing helper to handle punctuation and gloss lookup correctly
+        // We reuse the logic from parseWords/createWordBubble but inline or calling them is fine.
+        // Let's call them to be cleaner and ensure consistency.
+        const wordInfos = this.parseWords(latinText);
 
-        // Parse and create word bubbles
-        const words = this.parseWords(verseText);
-        words.forEach(wordInfo => {
+        wordInfos.forEach(wordInfo => {
             const bubble = this.createWordBubble(wordInfo);
-            wordsContainer.appendChild(bubble);
+
+            // Re-attach listeners because createWordBubble doesn't add them by default
+            // (Wait, createWordBubble in this file is just creating elements. Listeners were added in createVerseElement)
+
+            // Interaction for the bubble
+            // The bubble element returned by createWordBubble is the container div
+
+            // Add listeners to the bubble div
+            bubble.addEventListener('mouseenter', (e) => this.showTooltip(bubble, e));
+            bubble.addEventListener('click', (e) => this.toggleTooltip(bubble, e));
+
+            latinDiv.appendChild(bubble);
         });
 
-        verse.appendChild(wordsContainer);
-        return verse;
+        contentDiv.appendChild(latinDiv);
+
+        // English Text (Hidden for immersion, preserved in data for search)
+        /* 
+        if (englishText) {
+            const englishDiv = document.createElement('div');
+            englishDiv.className = 'verse-english';
+            englishDiv.textContent = englishText;
+            contentDiv.appendChild(englishDiv);
+        }
+        */
+
+        container.appendChild(contentDiv);
+        this.versesContainer.appendChild(container);
     }
 
+    clearVerses() {
+        this.versesContainer.innerHTML = '';
+    }
+
+    // The parseWords and createWordBubble functions are no longer used with the new renderVerse
+    // However, the instruction did not explicitly ask to remove them, so they remain.
     parseWords(text) {
         const result = [];
         // Split on spaces but keep punctuation with words
@@ -300,11 +367,16 @@ class VulgateReader {
         if (!wordInfo.isPunctuation) {
             const translation = document.createElement('span');
             translation.className = 'word-translation';
-            translation.textContent = LatinLexicon.getTranslation(wordInfo.word);
+            // Use lowercase and stripped word for lookup if needed, but wordInfo.word is already stripped by parseWords logic
+            // providing that parseWords logic works as expected. 
+            // In parseWords: token = token.slice(0, -trailingPunct.length);
+            // So wordInfo.word is indeed clean of punctuation.
+            // But we must ensure case-insensitive lookup.
+            translation.textContent = LatinLexicon.getTranslation(wordInfo.word.toLowerCase()) || LatinLexicon.getTranslation(wordInfo.word);
             bubble.appendChild(translation);
 
             // Store word data for tooltip
-            bubble.dataset.word = wordInfo.word;
+            bubble.dataset.word = wordInfo.word; // Keep original case for display
         }
 
         return bubble;
@@ -314,14 +386,25 @@ class VulgateReader {
         const word = bubble.dataset.word;
         if (!word) return;
 
-        const entry = LatinLexicon.lookup(word);
+        // Lookup with lowercase
+        const entry = LatinLexicon.lookup(word.toLowerCase()) || LatinLexicon.lookup(word);
 
         // Update tooltip content
         this.tooltip.querySelector('.tooltip-word').textContent = word;
 
         if (entry) {
             this.tooltip.querySelector('.tooltip-pos').textContent = entry.pos || '';
-            this.tooltip.querySelector('.tooltip-lemma').textContent = entry.lemma || word;
+
+            const lemmaSection = this.tooltip.querySelector('.tooltip-lemma').closest('.tooltip-section');
+            const lemma = entry.lemma || word;
+            this.tooltip.querySelector('.tooltip-lemma').textContent = lemma;
+
+            // Hide lemma section if redundant
+            if (lemma.toLowerCase() === word.toLowerCase()) {
+                lemmaSection.style.display = 'none';
+            } else {
+                lemmaSection.style.display = 'block';
+            }
 
             const meaningsList = this.tooltip.querySelector('.tooltip-meanings');
             meaningsList.innerHTML = '';
@@ -341,7 +424,10 @@ class VulgateReader {
             }
         } else {
             this.tooltip.querySelector('.tooltip-pos').textContent = 'unknown';
-            this.tooltip.querySelector('.tooltip-lemma').textContent = word;
+
+            // For unknown words, lemma is redundant with the word itself usually
+            const lemmaSection = this.tooltip.querySelector('.tooltip-lemma').closest('.tooltip-section');
+            lemmaSection.style.display = 'none';
 
             const meaningsList = this.tooltip.querySelector('.tooltip-meanings');
             meaningsList.innerHTML = '<li>No definition available</li>';
@@ -350,7 +436,14 @@ class VulgateReader {
         }
 
         this.tooltip.classList.remove('hidden');
-        this.positionTooltip(event);
+
+        // If pinned (clicked), position relative to element to ensure it's visible on screen
+        // If hovered, position relative to mouse
+        if (this.pinnedBubble) {
+            this.positionTooltipNearElement(bubble);
+        } else {
+            this.positionTooltip(event);
+        }
     }
 
     positionTooltip(event) {
@@ -374,6 +467,27 @@ class VulgateReader {
 
         this.tooltip.style.left = x + 'px';
         this.tooltip.style.top = y + 'px';
+    }
+
+    positionTooltipNearElement(element) {
+        const padding = 10;
+        const rect = element.getBoundingClientRect();
+        const tooltipRect = this.tooltip.getBoundingClientRect();
+
+        // Try to position below
+        let top = rect.bottom + padding;
+        let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+
+        // If goes off bottom, put above
+        if (top + tooltipRect.height > window.innerHeight) {
+            top = rect.top - tooltipRect.height - padding;
+        }
+
+        // Horizontal clamp
+        left = Math.max(padding, Math.min(left, window.innerWidth - tooltipRect.width - padding));
+
+        this.tooltip.style.left = left + 'px';
+        this.tooltip.style.top = top + 'px';
     }
 
     hideTooltip() {
@@ -425,9 +539,337 @@ class VulgateReader {
             this.savePosition();
         }
     }
+    scrollToVerse(verseNum) {
+        setTimeout(() => {
+            const verseElement = document.getElementById(`verse-${verseNum}`);
+            if (verseElement) {
+                // Ensure the verse is rendered/expanded
+                verseElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Highlight effect
+                const originalTransition = verseElement.style.transition;
+                const originalBg = verseElement.style.backgroundColor;
+
+                verseElement.style.transition = 'background-color 0.5s';
+                verseElement.style.backgroundColor = 'rgba(255, 198, 109, 0.3)'; // Roman Gold tint
+
+                setTimeout(() => {
+                    verseElement.style.backgroundColor = originalBg;
+                    verseElement.style.transition = originalTransition;
+                }, 2000);
+            }
+        }, 800); // Delay to allow chapter rendering
+    }
+}
+
+class SearchController {
+    constructor(reader) {
+        this.reader = reader;
+        this.overlay = document.getElementById('search-overlay');
+        this.input = document.getElementById('search-input');
+        this.resultsContainer = document.getElementById('search-results');
+        this.isOpen = false;
+
+        this.bindEvents();
+    }
+
+    bindEvents() {
+        // Global keyboard shortcut
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && !this.isOpen) {
+                e.preventDefault(); // Prevent '/' from being typed if focused elsewhere
+                this.open();
+            }
+            if (e.key === 'Escape' && this.isOpen) {
+                this.close();
+            }
+        });
+
+        // Close on clicking outside
+        this.overlay.addEventListener('click', (e) => {
+            if (e.target === this.overlay) {
+                this.close();
+            }
+        });
+
+        // Search input
+        this.input.addEventListener('input', () => this.performSearch());
+    }
+
+    open() {
+        this.overlay.classList.remove('hidden');
+        this.input.focus();
+        this.isOpen = true;
+    }
+
+    close() {
+        this.overlay.classList.add('hidden');
+        this.input.value = '';
+        this.clearResults();
+        this.isOpen = false;
+    }
+
+    performSearch() {
+        const query = this.input.value.trim().toLowerCase();
+        this.clearResults();
+
+        if (query.length < 2) return;
+
+        const results = [];
+
+        // 1. Navigation (e.g., "John 3")
+        const navResult = this.checkNavigation(query);
+        if (navResult) results.push(navResult);
+
+        // 2. Lexicon Search (Latin & English) with Scoring
+        const lexiconResults = this.searchLexicon(query);
+        results.push(...lexiconResults);
+
+        // 3. Text Search in Verses (Direct Latin match)
+        const textResults = this.searchText(query);
+        results.push(...textResults);
+
+        // 4. English -> Latin -> Verse Search
+        // If the query matches English meanings in the lexicon, search for those Latin words in the text
+        const englishMatches = lexiconResults.filter(r => r.scoreType === 'english');
+        if (englishMatches.length > 0) {
+            // Get unique Latin words from the top English matches (limit to top 3 to avoid noise)
+            const latinWords = [...new Set(englishMatches.slice(0, 3).map(r => r.latinWord))];
+
+            latinWords.forEach(latinWord => {
+                // Don't duplicate if we already searched this as text
+                if (latinWord.toLowerCase() === query) return;
+
+                const derivedResults = this.searchText(latinWord);
+                if (derivedResults.length > 0) {
+                    // Add a header/separator result? For now just add them
+                    results.push({
+                        type: 'verse (related)',
+                        label: `Verses containing '${latinWord}'`,
+                        sub: `(Match for "${query}")`,
+                        action: () => { } // Header, no action
+                    });
+
+                    // Modify the label/type to indicate it's a derived search
+                    derivedResults.forEach(r => {
+                        r.type = `verse (${latinWord})`;
+                    });
+                    results.push(...derivedResults);
+                }
+            });
+        }
+
+        this.displayResults(results);
+    }
+
+
+    checkNavigation(query) {
+        // Regex for "Book Chapter:Verse" pattern
+        // Matches "gen 1", "genesis 1", "1 cor 13", "exodus 20:4"
+        const match = query.match(/^(\d?\s?[a-z]+)\s+(\d+)(?::(\d+))?$/);
+        if (!match) return null;
+
+        const bookName = match[1];
+        const chapterNum = parseInt(match[2]);
+        const verseNum = match[3] ? parseInt(match[3]) : null;
+
+        // Find book key
+        const bookKey = Object.keys(VulgateData).find(key => {
+            const book = VulgateData[key];
+            return book.name.toLowerCase().startsWith(bookName) ||
+                book.abbrev.toLowerCase() === bookName ||
+                key.toLowerCase() === bookName;
+        });
+
+        if (bookKey && VulgateData[bookKey].chapters[chapterNum]) {
+            let label = `Go to ${VulgateData[bookKey].name} ${chapterNum}`;
+            if (verseNum) {
+                label += `:${verseNum}`;
+            }
+
+            return {
+                type: 'navigation',
+                label: label,
+                sub: 'Navigation',
+                action: () => {
+                    this.reader.loadPosition(bookKey, chapterNum);
+                    this.reader.savePosition();
+                    if (verseNum) {
+                        this.reader.scrollToVerse(verseNum);
+                    }
+                    this.close();
+                }
+            };
+        }
+        return null;
+    }
+
+    searchLexicon(query) {
+        const results = [];
+        // No hard limit here, we'll sort and slice later
+
+        // Search keys (Latin words)
+        Object.keys(LatinLexicon.words).forEach(word => {
+            const entry = LatinLexicon.words[word];
+            const lowerWord = word.toLowerCase();
+            const lowerLemma = (entry.lemma || '').toLowerCase();
+
+            // Scoring Logic
+            let score = 0;
+            let matchType = '';
+
+            // Exact Lemma/Word Match
+            if (lowerWord === query || lowerLemma === query) {
+                score = 100;
+                matchType = 'latin-exact';
+            }
+            // Exact English Meaning Match
+            else if (entry.meanings.some(m => m.toLowerCase() === query)) {
+                score = 80;
+                matchType = 'english';
+            }
+            // Starts with (Latin)
+            else if (lowerWord.startsWith(query) || lowerLemma.startsWith(query)) {
+                score = 60;
+                matchType = 'latin-partial';
+            }
+            // Contains (English)
+            else if (entry.meanings.some(m => m.toLowerCase().includes(query))) {
+                score = 40;
+                matchType = 'english';
+            }
+
+            if (score > 0) {
+                results.push({
+                    type: 'lexicon',
+                    label: word,
+                    latinWord: word, // Store for derived search
+                    score: score,
+                    scoreType: matchType,
+                    sub: `${entry.pos} • ${entry.meanings.join(', ')}`,
+                    action: () => {
+                        console.log('Selected word:', word);
+                        // Ideally this would show the definition or jump to it
+                    }
+                });
+            }
+        });
+
+        // Sort by score (descending)
+        results.sort((a, b) => b.score - a.score);
+
+        return results.slice(0, 5);
+    }
+
+    getSnippet(text, query) {
+        const index = text.toLowerCase().indexOf(query);
+        if (index === -1) return text;
+
+        const start = Math.max(0, index - 20);
+        const end = Math.min(text.length, index + query.length + 20);
+
+        let snippet = text.substring(start, end);
+        if (start > 0) snippet = '...' + snippet;
+        if (end < text.length) snippet = snippet + '...';
+
+        // Highlight
+        return snippet.replace(new RegExp(query, 'gi'), match => `<strong>${match}</strong>`);
+    }
+
+    searchText(query) {
+        const results = [];
+        const limit = 50; // Higher limit for text search
+        let count = 0;
+
+        // Iterate through all books and chapters
+        Object.keys(VulgateData).forEach(bookKey => {
+            const book = VulgateData[bookKey];
+            Object.keys(book.chapters).forEach(chapterNum => {
+                const chapter = book.chapters[chapterNum];
+                Object.keys(chapter).forEach(verseNum => {
+                    const verseData = chapter[verseNum];
+                    const latinText = typeof verseData === 'object' ? verseData.latin : verseData;
+                    const englishText = (typeof verseData === 'object' && verseData.english) ? verseData.english : '';
+
+                    let matchType = null;
+                    let matchSnippet = '';
+
+                    // Check Latin
+                    if (latinText.toLowerCase().includes(query)) {
+                        matchType = 'latin';
+                        matchSnippet = this.getSnippet(latinText, query);
+                    }
+                    // Check English
+                    else if (englishText.toLowerCase().includes(query)) {
+                        matchType = 'english';
+                        matchSnippet = this.getSnippet(englishText, query);
+                    }
+
+                    if (matchType) {
+                        results.push({
+                            type: matchType === 'english' ? 'verse (std)' : 'verse',
+                            label: `${book.name} ${chapterNum}:${verseNum}`,
+                            sub: matchSnippet,
+                            action: () => {
+                                this.reader.loadPosition(bookKey, parseInt(chapterNum));
+                                this.reader.savePosition();
+                                this.close();
+
+                                // Scroll to verse
+                                setTimeout(() => {
+                                    const verseEls = document.querySelectorAll('.verse-number');
+                                    for (let el of verseEls) {
+                                        if (el.textContent === verseNum) {
+                                            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                            // Highlight
+                                            el.parentElement.style.backgroundColor = 'rgba(212, 163, 115, 0.1)';
+                                            setTimeout(() => el.parentElement.style.backgroundColor = '', 2000);
+                                            break;
+                                        }
+                                    }
+                                }, 100);
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        return results.slice(0, limit);
+    }
+
+    displayResults(results) {
+        this.resultsContainer.innerHTML = '';
+
+        if (results.length === 0) {
+            this.resultsContainer.innerHTML = '<div class="search-result-item"><div class="result-sub">No results found</div></div>';
+            this.resultsContainer.classList.add('has-results');
+            return;
+        }
+
+        this.resultsContainer.classList.add('has-results');
+
+        results.forEach(result => {
+            const div = document.createElement('div');
+            div.className = 'search-result-item';
+            div.innerHTML = `
+                <div class="result-type">${result.type}</div>
+                <div class="result-main">${result.label}</div>
+                <div class="result-sub">${result.sub}</div>
+            `;
+            div.addEventListener('click', result.action);
+            this.resultsContainer.appendChild(div);
+        });
+    }
+
+    clearResults() {
+        this.resultsContainer.innerHTML = '';
+        this.resultsContainer.classList.remove('has-results');
+    }
 }
 
 // Initialize the application when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    new VulgateReader();
+    const reader = new VulgateReader();
+    new SearchController(reader);
 });
