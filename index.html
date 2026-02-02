@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="la">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulgar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Vulgar</h1>
+        <p class="subtitle">Latin Vulgate Bible Reader</p>
+    </header>
+
+    <nav id="navigation">
+        <div class="nav-controls">
+            <select id="book-select">
+                <option value="">Select Book...</option>
+            </select>
+            <select id="chapter-select" disabled>
+                <option value="">Chapter...</option>
+            </select>
+        </div>
+        <div class="nav-buttons">
+            <button id="prev-chapter" disabled>&larr; Previous</button>
+            <button id="next-chapter" disabled>Next &rarr;</button>
+        </div>
+    </nav>
+
+    <main id="content">
+        <div id="welcome-message">
+            <h2>Welcome to Vulgar</h2>
+            <p>Select a book and chapter from the navigation above to begin reading.</p>
+            <p>Each Latin word appears in its own bubble with a basic translation underneath.</p>
+            <p><strong>Hover over any word</strong> to see detailed grammatical information and alternative meanings.</p>
+        </div>
+        <div id="verses-container"></div>
+    </main>
+
+    <div id="tooltip" class="tooltip hidden">
+        <div class="tooltip-header">
+            <span class="tooltip-word"></span>
+            <span class="tooltip-pos"></span>
+        </div>
+        <div class="tooltip-content">
+            <div class="tooltip-section">
+                <strong>Lemma:</strong> <span class="tooltip-lemma"></span>
+            </div>
+            <div class="tooltip-section">
+                <strong>Meanings:</strong>
+                <ul class="tooltip-meanings"></ul>
+            </div>
+            <div class="tooltip-section tooltip-grammar">
+                <strong>Grammar:</strong> <span class="tooltip-grammar-text"></span>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Vulgar | Copyright &copy; 2026 euxaristia</p>
+    </footer>
+
+    <script src="lexicon.js"></script>
+    <script src="vulgate-data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
