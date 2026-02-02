@@ -176,18 +176,21 @@ main#content {
 }
 
 .verse-number {
-    background-color: #4e5254;
-    color: var(--accent-color);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
+    background-color: transparent;
+    color: #ffc66d; /* Roman Gold */
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    display: inline-block;
+    font-size: 1.4rem;
+    font-family: 'Cinzel', 'Georgia', serif; /* Cinzel for Roman look if avail, else Georgia */
     font-weight: bold;
+    margin-right: 1.0rem; /* significant spacing from words */
+    margin-top: 0.2rem;   /* Align nicely with text */
     flex-shrink: 0;
-    border: 1px solid var(--border-color);
+    border: none;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    opacity: 0.9;
 }
 
 .verse-reference {
@@ -415,4 +418,136 @@ footer {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/* Search Overlay */
+.search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    padding-top: 15vh;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.search-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.search-container {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+#search-input {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 12px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    font-family: inherit;
+}
+
+#search-input:focus {
+    outline: 2px solid var(--primary-color);
+}
+
+.search-results {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    max-height: 50vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: none; /* Hidden when empty */
+}
+
+.search-results.has-results {
+    display: block;
+}
+
+.search-result-item {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: #4e5254;
+}
+
+.search-result-item.selected {
+    background-color: #4e5254;
+    border-left: 4px solid var(--primary-color);
+}
+
+.result-type {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.5px;
+}
+
+.result-main {
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    margin-bottom: 0.25rem;
+}
+
+.result-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.search-help {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    padding: 0 0.5rem;
+}
+
+/* English Translation Stacking */
+.verse-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.verse-english {
+    font-size: 0.95rem;
+    color: #a0a0a0; /* Slightly dim */
+    font-style: italic;
+    font-family: 'Georgia', serif; /* Serif for KJV feel */
+    margin-left: 0.2rem;
+    line-height: 1.4;
+}
+
+/* Adjust Verse Container for multi-line */
+.verse-container {
+    align-items: flex-start; /* Align number to top */
+}
+
+.verse-number {
+    margin-top: 0.4rem; /* Push down slightly to align with first line of Latin */
 }

@@ -1,0 +1,4 @@
+node_modules
+missing_words.txt
+.DS_Store
+*.log

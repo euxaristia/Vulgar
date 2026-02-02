@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="la">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vulgar</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <header>
         <h1>Vulgar</h1>
@@ -18,7 +21,7 @@
                 <option value="">Select Book...</option>
             </select>
             <select id="chapter-select" disabled>
-                <option value="">Chapter...</option>
+                <option value="">Capitulum...</option>
             </select>
         </div>
         <div class="nav-buttons">
@@ -32,7 +35,8 @@
             <h2>Welcome to Vulgar</h2>
             <p>Select a book and chapter from the navigation above to begin reading.</p>
             <p>Each Latin word appears in its own bubble with a basic translation underneath.</p>
-            <p><strong>Hover over any word</strong> to see detailed grammatical information and alternative meanings.</p>
+            <p><strong>Hover over any word</strong> to see detailed grammatical information and alternative meanings.
+            </p>
         </div>
         <div id="verses-container"></div>
     </main>
@@ -56,6 +60,17 @@
         </div>
     </div>
 
+    <div id="search-overlay" class="search-overlay hidden">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search (Press '/' to open)" autocomplete="off">
+            <div id="search-results" class="search-results"></div>
+            <div class="search-help">
+                <span>Examples: "John 1", "lux", "love"</span>
+                <span class="search-close-hint">Esc to close</span>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>Vulgar | Copyright &copy; 2026 euxaristia</p>
     </footer>
@@ -64,4 +79,5 @@
     <script src="vulgate-data.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>
