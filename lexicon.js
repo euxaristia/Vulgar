@@ -291,6 +291,18 @@ const LatinLexicon = {
             meanings: ['created', 'made', 'produced'],
             grammar: '3rd person singular perfect indicative active'
         },
+        'comprehenderunt': {
+            lemma: 'comprehendo',
+            pos: 'verb',
+            meanings: ['comprehended', 'grasped', 'seized', 'understood', 'overcame'],
+            grammar: '3rd person plural perfect indicative active'
+        },
+        'comprehendit': {
+            lemma: 'comprehendo',
+            pos: 'verb',
+            meanings: ['comprehended', 'grasped', 'seized', 'understood'],
+            grammar: '3rd person singular perfect indicative active'
+        },
         'cum': {
             lemma: 'cum',
             pos: 'preposition/conjunction',

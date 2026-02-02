@@ -382,7 +382,9 @@ footer {
 }
 
 .word-bubble.punctuation .word-latin {
-    color: var(--text-muted);
+    color: #a9b7c6;
+    font-size: 1.3rem;
+    font-weight: bold;
 }
 
 .word-bubble.punctuation .word-translation {
