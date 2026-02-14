@@ -3,4 +3,3 @@ missing_words.txt
 .DS_Store
 *.log
 src/scripts/latin_dictionary.json
-dist/
