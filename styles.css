@@ -35,6 +35,25 @@ header {
     text-align: center;
     box-shadow: 0 2px 10px rgba(0,0,0,0.4);
     border-bottom: 1px solid var(--border-color);
+    position: relative;
+}
+
+.github-link {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    color: var(--primary-light);
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.github-link:hover {
+    opacity: 1;
+    color: var(--accent-color);
+    transform: scale(1.1);
 }
 
 header h1 {
@@ -327,6 +346,16 @@ footer {
 @media (max-width: 768px) {
     header h1 {
         font-size: 1.5rem;
+    }
+
+    .github-link {
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .github-link svg {
+        width: 20px;
+        height: 20px;
     }
 
     nav#navigation {
