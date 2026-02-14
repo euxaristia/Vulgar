@@ -2,4 +2,5 @@ node_modules
 missing_words.txt
 .DS_Store
 *.log
-scripts/latin_dictionary.json
+src/scripts/latin_dictionary.json
+dist/
