@@ -33,4 +33,4 @@ python3 -m http.server 8000
 
 ## License
 
-BSD 3-Clause. See [LICENSE](LICENSE).
+AGPLv3. See [LICENSE](LICENSE).
