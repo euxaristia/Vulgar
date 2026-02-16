@@ -27,8 +27,8 @@ Just open `index.html` in your browser. That's it.
 Or if you want to be fancy:
 
 ```bash
-python3 -m http.server 8000
-# then go to http://localhost:8000
+bun serve.ts
+# then go to http://localhost:3000
 ```
 
 ## License
